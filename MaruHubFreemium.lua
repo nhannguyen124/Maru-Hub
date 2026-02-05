@@ -1,7 +1,5 @@
--- https://discord.gg/W7maHHMx
 
-
-shared.LoaderTitle = "HieuDepTrai";
+shared.LoaderTitle = "QuanDepTrai";
 shared.LoaderKeyFrames = {
     [1] = {
         1,
@@ -105,7 +103,7 @@ local v8 = CreateObject("TextLabel", {
     Name = "UserName",
     Parent = v6,
     BackgroundTransparency = 1,
-    Text = "TikTok:Trongnguyen",
+    Text = "TikTok:lumakd",
     Position = UDim2.new(0, 75, 0, 10),
     Size = UDim2.new(0, 200, 0, 50),
     Font = Enum.Font.GothamBold,
@@ -314,7 +312,7 @@ v5:Destroy();
 local v14 = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))();
 local v15 = v14:CreateWindow({
     Title = "Maru Hub [Freemium]",
-    SubTitle = "By HieuDepTrai",
+    SubTitle = "By QuanDepTrai",
     TabWidth = 160,
     Theme = "Amethyst",
     Acrylic = false,
