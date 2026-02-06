@@ -443,7 +443,7 @@ function CheckLevel()
             NameQuest = "DesertQuest";
             QuestLv = 2;
             NameMon = "Desert Officer";
-            CFrameQ = CFrame.new(896.51721191406, 6.4384617805481, 4390.1494140625);
+            CFrameQ = CFrame.new(1547.1510009766, 14.452038764954, 4381.8002929688);
             CFrameMon = CFrame.new(1547.1510009766, 14.452038764954, 4381.8002929688);
         elseif ((v197 == 90) or (v197 <= 99) or (SelectMonster == "Snow Bandit")) then
             Ms = "Snow Bandit";
