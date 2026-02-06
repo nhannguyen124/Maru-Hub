@@ -221,94 +221,6 @@ TweenObject(v6, 0.25, {
 });
 wait(0.25);
 v5:Destroy();
--- spawn(function()
---     while wait() do
---         function print()
---         end
---         function warn()
---         end
---         function error()
---         end
---         debug.traceback = function()
---             return "Traceback blocked";
---         end;
---         debug.info = function()
---             return "Info blocked";
---         end;
---         local v420 = getrawmetatable(game);
---         if (v420 and not v420.__metatable) then
---             setreadonly(v420, false);
---             local v658 = v420.__index;
---             local v659 = v420.__newindex;
---             v420.__index = function(v759, v760)
---                 if ((v760 == "debug") or (v760 == "getrawmetatable")) then
---                     error("Anti Skid: Tampering detected!");
---                 end
---                 return v658(v759, v760);
---             end;
---             v420.__newindex = function(v761, v762, v763)
---                 if ((v762 == "debug") or (v762 == "getrawmetatable")) then
---                     error("Anti Skid: Tampering detected!");
---                 end
---                 return v659(v761, v762, v763);
---             end;
---             setreadonly(v420, true);
---         end
---         local function v421()
---             local v568 = {
---                 "_G",
---                 "debug",
---                 "getgenv",
---                 "getrawmetatable",
---                 "setfenv",
---                 "loadstring",
---                 "hookfunction"
---             };
---             for v662, v663 in ipairs(v568) do
---                 local v664, v665 = pcall(function()
---                     return _G[v663];
---                 end);
---                 if (v664 and v665) then
---                     error("Anti Skid: Environment tampering detected!");
---                 end
---             end
---         end
---         local function v422()
---             local v569 = {
---                 getrawmetatable,
---                 setreadonly,
---                 getgenv,
---                 debug.getinfo,
---                 debug.getregistry
---             };
---             for v666, v667 in ipairs(v569) do
---                 if v667 then
---                     error("Anti Skid: Hook tampering detected!");
---                 end
---             end
---         end
---         local v423 = game:FindService("HttpService");
---         if v423 then
---             v423.RequestAsync = function()
---                 error("HTTP Requests Blocked");
---             end;
---             v423.GetAsync = function()
---                 error("HTTP Get Blocked");
---             end;
---             v423.PostAsync = function()
---                 error("HTTP Post Blocked");
---             end;
---         end
---         function collectgarbage()
---             error("GC Blocked");
---         end
---         os.time = function()
---             error("OS Time Blocked");
---         end;
---         pcall(v421);
---         pcall(v422);
---     end
--- end);
 local v14 = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))();
 local v15 = v14:CreateWindow({
     Title = "Maru Hub [Freemium]",
@@ -1024,7 +936,7 @@ function CheckLevel()
             NameMon = "Serpent Hunter";
             CFrameQ = CFrame.new(- 16665.19140625, 104.59640502929688, 1579.6943359375);
             CFrameMon = CFrame.new(- 16621.4140625, 121.40631103515625, 1290.6881103515625);
-        elseif ((v197 == 2575) or (v197 <= 2599) or (SelectMonster == "Skull Slayer") or (v197 == 2600)) then
+        elseif ((v197 == 2575) or (v197 <= 2599) or (SelectMonster == "Skull Slayer") or (v197 >2600)) then
             Ms = "Skull Slayer";
             NameQuest = "TikiQuest3";
             QuestLv = 2;
@@ -2760,9 +2672,9 @@ spawn(function()
                 CheckLevel();
                 if (not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or (game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false)) then
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest");
-                    Tween(CFrameQ);
-                    if ((CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5) then
-                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv);
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest", NameQuest, QuestLv);
+                    if ((CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude >= 500) then
+                        Tween(CFrameQ);
                     end
                 elseif (string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or (game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true)) then
                     for v1432, v1433 in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
@@ -6380,8 +6292,6 @@ spawn(function()
         end);
     end
 end);
-local v89 = require(game.ReplicatedStorage.Util.CameraShaker);
-v89:Stop();
 local v90 = v16.Setting:AddToggle("ToggleBringMob", {
     Title = "Gom Quái",
     Description = "",
@@ -8893,8 +8803,6 @@ spawn(function()
                         v159:SetDesc("Destroy 10 trees on Hydra Island.");
                     end
                 end
-            else
-                print(v655);
             end
         end
     end);
