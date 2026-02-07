@@ -2380,71 +2380,79 @@ function GetWeaponInventory(v222)
     return false;
 end
 local v21 = game.Players.LocalPlayer;
-function FindEnemiesInRange(v223, v224)
-    local v225 = (v21.Character or v21.CharacterAdded:Wait()):GetPivot().Position;
-    local v226 = nil;
-    for v471, v472 in ipairs(v224) do
-        if (not v472:GetAttribute("IsBoat") and v472:FindFirstChildOfClass("Humanoid") and (v472.Humanoid.Health > 0)) then
-            local v671 = v472:FindFirstChild("Head");
-            if (v671 and ((v225 - v671.Position).Magnitude <= 60)) then
-                if (v472 ~= v21.Character) then
-                    table.insert(v223, {
-                        v472,
-                        v671
-                    });
-                    v226 = v671;
+function FindEnemiesInRange(Hits, Enemies, AttackPlayers)
+    local Character = v21.Character or v21.CharacterAdded:Wait()
+    local Pos = Character:GetPivot().Position
+    local ClosestPart = nil
+    local ClosestDist = math.huge
+    for _, Mob in ipairs(Enemies) do
+        local Humanoid = Mob:FindFirstChildOfClass("Humanoid")
+        if Humanoid and Humanoid.Health > 0 and not Mob:GetAttribute("IsBoat") then
+            local Root = Mob:FindFirstChild("HumanoidRootPart") or Mob.PrimaryPart or Mob:FindFirstChild("Head")
+            if Root then
+                local Dist = (Pos - Root.Position).Magnitude
+                table.insert(Hits, { Mob, Root })
+                if Dist < ClosestDist then
+                    ClosestDist = Dist
+                    ClosestPart = Root
                 end
             end
         end
     end
-    for v473, v474 in ipairs(game.Players:GetPlayers()) do
-        if (v474.Character and (v474 ~= v21)) then
-            local v672 = v474.Character:FindFirstChild("Head");
-            if (v672 and ((v225 - v672.Position).Magnitude <= 60)) then
-                table.insert(v223, {
-                    v474.Character,
-                    v672
-                });
-                v226 = v672;
+    for _, Plr in ipairs(game.Players:GetPlayers()) do
+        if Plr ~= v21 and Plr.Character then
+            local Root = Plr.Character:FindFirstChild("HumanoidRootPart")
+            if Root then
+                local Dist = (Pos - Root.Position).Magnitude
+                table.insert(Hits, { Plr.Character, Root })
+                if Dist < ClosestDist then
+                    ClosestDist = Dist
+                    ClosestPart = Root
+                end
             end
         end
     end
-    return v226;
+
+    return ClosestPart
 end
+
 function GetEquippedTool()
-    local v227 = v21.Character;
-    if not v227 then
-        return nil;
-    end
-    for v475, v476 in ipairs(v227:GetChildren()) do
-        if v476:IsA("Tool") then
-            return v476;
-        end
-    end
-    return nil;
+    local Char = v21.Character
+    if not Char then return end
+    return Char:FindFirstChildOfClass("Tool")
 end
+
 function AttackNoCoolDown()
-    local v228 = {};
-    local v229 = game:GetService("Workspace").Enemies:GetChildren();
-    local v230 = FindEnemiesInRange(v228, v229);
-    if not v230 then
-        return;
-    end
-    local v231 = GetEquippedTool();
-    if not v231 then
-        return;
-    end
+    local Hits = {}
+    local Enemies = workspace.Enemies:GetChildren()
+    local Target = FindEnemiesInRange(Hits, Enemies)
+    if not Target then return end
+
+    local Tool = GetEquippedTool()
+    if not Tool then return end
+
+    local Character = game.Players.LocalPlayer.Character
+    local Root = Character and Character:FindFirstChild("HumanoidRootPart")
+    if not Root then return end
+
     pcall(function()
-        local v477 = game:GetService("ReplicatedStorage");
-        local v478 = v477:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterAttack");
-        local v479 = v477:WaitForChild("Modules"):WaitForChild("Net"):WaitForChild("RE/RegisterHit");
-        if (# v228 > 0) then
-            v478:FireServer(1e-9);
-            v479:FireServer(v230, v228);
-        else
-            task.wait(1e-9);
+        if Tool.ToolTip == "Blox Fruit" then
+            local Remote = Tool:FindFirstChild("LeftClickRemote")
+            if Remote then
+                local Direction = (Target.Position - Root.Position).Unit
+                Remote:FireServer(Direction, 1) -- combo = 1 (spam)
+            end
+            return
         end
-    end);
+        local Net = game:GetService("ReplicatedStorage").Modules.Net
+        local RegisterAttack = Net["RE/RegisterAttack"]
+        local RegisterHit = Net["RE/RegisterHit"]
+
+        if #Hits > 0 then
+            RegisterAttack:FireServer(1e-9)
+            RegisterHit:FireServer(Target, Hits)
+        end
+    end)
 end
 Type = 1;
 spawn(function()
