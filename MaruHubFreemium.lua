@@ -2450,15 +2450,15 @@ Type = 1;
 spawn(function()
     while wait() do
         if (Type == 1) then
-            Pos = CFrame.new(0, 40, 0);
+            Pos = CFrame.new(0, 20, 0);
         elseif (Type == 2) then
-            Pos = CFrame.new(- 40, 40, 0);
+            Pos = CFrame.new(- 40, 20, 0);
         elseif (Type == 3) then
-            Pos = CFrame.new(40, 40, 0);
+            Pos = CFrame.new(40, 20, 0);
         elseif (Type == 4) then
-            Pos = CFrame.new(0, 40, 40);
+            Pos = CFrame.new(0, 20, 40);
         elseif (Type == 5) then
-            Pos = CFrame.new(0, 40, - 40);
+            Pos = CFrame.new(0, 20, - 40);
         end
     end
 end);
