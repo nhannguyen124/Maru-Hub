@@ -2765,6 +2765,49 @@ spawn(function()
         end
     end
 end);
+local KitNear = v16.Main:AddToggle("ToggleMobAura", {
+    Title = "Đấm Quái Gần",
+    Description = "",
+    Default = false
+});
+KitNear:OnChanged(function(KitNear)
+    _G.KitNear = KitNear;
+    if (v238 == false) then
+        wait();
+        Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame);
+        wait();
+    end
+end);
+spawn(function()
+    while wait() do
+        if _G.KitNear then
+            pcall(function()
+                for v838, v839 in pairs(game.Workspace.Enemies:GetChildren()) do
+                    if (v839:FindFirstChild("Humanoid") and v839:FindFirstChild("HumanoidRootPart") and (v839.Humanoid.Health > 0)) then
+                        if v839.Name then
+                            if ((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v839:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 5000) then
+                                repeat
+                                    wait(_G.Fast_Delay);
+                                    AttackNoCoolDown();
+                                    AutoHaki();
+                                    EquipTool(SelectWeapon);
+                                    Tween(v839.HumanoidRootPart.CFrame);
+                                    v839.HumanoidRootPart.Size = Vector3.new(60, 60, 60);
+                                    v839.HumanoidRootPart.Transparency = 1;
+                                    v839.Humanoid.JumpPower = 0;
+                                    v839.Humanoid.WalkSpeed = 0;
+                                    v839.HumanoidRootPart.CanCollide = false;
+                                    FarmPos = v839.HumanoidRootPart.CFrame;
+                                    MonFarm = v839.Name;
+                                until not _G.KitNear 
+                            end
+                        end
+                    end
+                end
+            end);
+        end
+    end
+end);
 local v51 = v16.Main:AddToggle("ToggleCastleRaid", {
     Title = "Đấm Hải Tặc",
     Description = "",
