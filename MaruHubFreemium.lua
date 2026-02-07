@@ -2619,7 +2619,7 @@ local v48 = v16.Main:AddDropdown("DropdownSelectWeapon", {
     Values = {
         "Melee",
         "Sword",
-        "Blox Fruits"
+        "Blox Fruit"
     },
     Multi = false,
     Default = 1
