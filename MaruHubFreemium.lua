@@ -2766,7 +2766,7 @@ spawn(function()
     end
 end);
 local KitNear = v16.Main:AddToggle("ToggleMobAura", {
-    Title = "Đấm Quái Gần",
+    Title = "Đấm Quái Gần Kitsune Fruit",
     Description = "",
     Default = false
 });
